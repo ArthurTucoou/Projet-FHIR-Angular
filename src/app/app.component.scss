@@ -1,0 +1,12 @@
+.background-container {
+  background-image: url('../assets/bg-bureau.avif');
+  background-size: cover; /* ou contain selon besoin */
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* plein écran si souhaité */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
