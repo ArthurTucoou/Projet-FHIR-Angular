@@ -1,0 +1,68 @@
+<h2 class="form-title">Ajouter un patient</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid form-container">
+
+    <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom">
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Date de naissance</mat-label>
+            <input matInput type="date" formControlName="dateNaissance">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Lieu de naissance</mat-label>
+            <input matInput formControlName="lieuNaissance">
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Adresse</mat-label>
+            <input matInput formControlName="adresse">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>État civil</mat-label>
+            <mat-select formControlName="etatCivil">
+                <mat-option value="celibataire">Célibataire</mat-option>
+                <mat-option value="marie">Marié(e)</mat-option>
+                <mat-option value="divorce">Divorcé(e)</mat-option>
+                <mat-option value="veuf">Veuf(ve)</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <label class="radio-label">Genre :</label>
+        <mat-radio-group formControlName="genre" class="radio-group">
+            <mat-radio-button value="male">Homme</mat-radio-button>
+            <mat-radio-button value="female">Femme</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Valider</button>
+    </div>
+</form>

@@ -1,0 +1,62 @@
+$form-bg: #e3f2fd; // bleu clair
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.form-field {
+    flex: 1;
+    min-width: 200px;
+}
+
+.radio-label {
+    font-weight: 500;
+    margin-right: 12px;
+    align-self: center;
+}
+
+.radio-group {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.form-actions {
+    margin-top: 24px;
+}
+
+.form-title {
+    background-color: $form-bg;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.form-container {
+    background-color: $form-bg;
+    padding: 24px;
+    border-radius: 12px;
+}
+
+.mat-form-field {
+    background-color: white; // pour que les champs restent lisibles
+    border-radius: 4px;
+    padding: 4px;
+}
+
+button[type="submit"] {
+    background-color: #64b5f6; // bleu un peu plus foncé
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #42a5f5;
+}

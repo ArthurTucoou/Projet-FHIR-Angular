@@ -1,0 +1,24 @@
+<h2>Liste des patients</h2>
+@if(isLoading) {
+<div>Chargement...</div>
+}
+@if(errorMessage) {
+<div>{{ errorMessage }}</div>
+}
+@if(!isLoading && patients.length > 0) {
+<ul>
+    @for(patient of patients; track patient.id) {
+    <li>
+        {{ patient.name?.[0]?.family || 'Nom inconnu' }},
+        {{ patient.name?.[0]?.given?.[0] || '' }}
+        (Né(e) le {{ patient.birthDate || 'inconnu' }})
+    </li>
+    }
+</ul>
+}
+
+@if(!isLoading && patients.length === 0) {
+<div>
+    Aucun patient trouvé.
+</div>
+}
