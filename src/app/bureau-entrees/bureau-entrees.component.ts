@@ -12,11 +12,11 @@ export class BureauEntreesComponent {
 
   private router = inject(Router);
 
-  goToPatients() {
+  afficheListePatients() {
     this.router.navigate(['/liste-patients']);
   }
 
-  ajoutPatient() {
+  afficheFormulairePatient() {
     this.router.navigate(['/ajout-patient']);
   }
 }
