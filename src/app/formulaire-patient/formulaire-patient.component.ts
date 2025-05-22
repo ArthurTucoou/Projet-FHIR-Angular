@@ -29,7 +29,7 @@ export class FormulairePatientComponent {
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
 
-  form = this.fb.group({
+    form = this.fb.group({
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
     dateNaissance: ['', Validators.required],
@@ -67,7 +67,7 @@ export class FormulairePatientComponent {
           valueString: formValue.lieuNaissance
         },
         {
-          url: "http://example.org/fhir/StructureDefinition/etat-civil",
+          url: "https://hl7.fr/ig/fhir/core/ValueSet/fr-core-vs-marital-status",
           valueString: formValue.etatCivil
         }
       ]

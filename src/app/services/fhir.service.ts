@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +34,12 @@ export class FhirService {
   // Supprimer un patient
   deletePatient(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/Patient/${id}`);
+  }
+
+  getAppointmentsByPatientId(patientId: string): Observable<any[]> {
+    const url = `${this.apiUrl}/Appointment?patient=Patient/${patientId}`;
+    return this.http.get<any>(url).pipe(
+      map(response => response.entry?.map((e: any) => e.resource) || [])
+    );
   }
 }

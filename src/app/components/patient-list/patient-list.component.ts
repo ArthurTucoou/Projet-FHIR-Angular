@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FhirService } from '../../services/fhir.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-list',
@@ -16,6 +17,7 @@ export class PatientListComponent implements OnInit {
 
   private fhirService = inject(FhirService);
   private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
 
   ngOnInit(): void {
     console.log("tesstt");
@@ -36,11 +38,11 @@ export class PatientListComponent implements OnInit {
     });
   }
 
-  deletePatient(id: string) {
+  deletePatient(patientId: string) {
     if (window.confirm('Voulez-vous vraiment supprimer ce patient ?')) {
-      this.fhirService.deletePatient(id).subscribe({
+      this.fhirService.deletePatient(patientId).subscribe({
         next: () => {
-          this.patients = this.patients.filter(p => p.id !== id); // Met à jour la liste localement
+          this.patients = this.patients.filter(p => p.id !== patientId); // Met à jour la liste localement
           this.snackBar.open('Patient supprimé avec succès', 'Fermer', { duration: 3000 });
         },
         error: (error) => {
@@ -49,6 +51,9 @@ export class PatientListComponent implements OnInit {
         }
       });
     }
+  }
 
+  redirectToDetailPatient(patientId: string) {
+    this.router.navigate([`/patients/${patientId}`]);
   }
 }

@@ -13,6 +13,10 @@
         {{ patient.name?.[0]?.given?.[0] || '' }}
         (Né(e) le {{ patient.birthDate || 'inconnu' }})
 
+        <button mat-icon-button color="warn" (click)="redirectToDetailPatient(patient.id)" style="margin-left: 8px;">
+            <mat-icon>voir les détails</mat-icon>
+        </button>
+
         <button mat-icon-button color="warn" (click)="deletePatient(patient.id)" style="margin-left: 8px;">
             <mat-icon>delete</mat-icon>
         </button>
