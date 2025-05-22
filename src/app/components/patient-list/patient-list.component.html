@@ -1,26 +1,39 @@
-<h2>Liste des patients</h2>
+<h1> 🩺 Liste des patients</h1>
+
 @if(isLoading) {
-<div>Chargement...</div>
+  <div class="status">Chargement...</div>
 }
+
 @if(errorMessage) {
-<div>{{ errorMessage }}</div>
+  <div class="status error">{{ errorMessage }}</div>
 }
+
 @if(!isLoading && patients.length > 0) {
-<ul>
+  <div class="patient-grid">
     @for(patient of patients; track patient.id) {
-    <li>
-        {{ patient.name?.[0]?.family || 'Nom inconnu' }},
-        {{ patient.name?.[0]?.given?.[0] || '' }}
-        (Né(e) le {{ patient.birthDate || 'inconnu' }})
-    </li>
+      <mat-card class="patient-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ patient.name?.[0]?.given?.join(' ') || '–' }}
+            {{ patient.name?.[0]?.family || '' }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            Né(e) le {{ patient.birthDate || 'inconnu' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-actions align="end">
+           <button mat-fab  (click)="deletePatient(patient.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        </mat-card-actions>
+      </mat-card>
     }
-</ul>
+  </div>
 }
 
 @if(!isLoading && patients.length === 0) {
-<div>
-    Aucun patient trouvé.
-</div>
+  <div class="status">Aucun patient trouvé.</div>
 }
 
 <router-outlet/>

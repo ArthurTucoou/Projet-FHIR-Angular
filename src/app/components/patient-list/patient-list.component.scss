@@ -1,0 +1,50 @@
+/* Titre de la page */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Message de statut */
+.status {
+  font-size: 1.125rem;
+  margin: 1rem 0;
+  &.error {
+    color: #d32f2f;
+  }
+}
+
+/* Grille responsive de cards */
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+/* Style de chaque carte */
+.patient-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: #fff;
+
+  mat-card-header {
+    padding-bottom: 0.5rem;
+  }
+
+  mat-card-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.95rem;
+    color: rgba(0,0,0,0.6);
+  }
+
+  mat-card-actions {
+    padding: 0.5rem 1rem;
+  }
+}
+

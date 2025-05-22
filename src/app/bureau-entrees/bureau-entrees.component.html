@@ -1,13 +1,20 @@
-<!-- bureau-entrees.component.html -->
 <div class="container">
   <header class="header"><span>Bienvenue à l’accueil</span></header>
   <div class="body">
     <aside class="sidebar">
-      <button mat-raised-button color="primary"  class="btn" [routerLink]="['liste-patients']" routerLinkActive="active">Liste Patients</button>
-      <button mat-raised-button color="primary" class="btn" [routerLink]="['ajout-patient']"    routerLinkActive="active">Ajout Patient</button>
+      <button mat-raised-button color="primary" class="btn"
+              [routerLink]="['liste-patients']"
+              routerLinkActive="active">
+        Liste Patients
+      </button>
+      <button mat-raised-button color="primary" class="btn"
+              [routerLink]="['ajout-patient']"
+              routerLinkActive="active">
+        Ajout Patient
+      </button>
     </aside>
     <main class="content">
-      <!-- <router-outlet> pour les enfants de BureauEntreesComponent -->
+      <!-- ici s’affichent PatientListComponent ou FormulairePatientComponent -->
       <router-outlet></router-outlet>
     </main>
   </div>

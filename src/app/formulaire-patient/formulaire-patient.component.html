@@ -5,52 +5,44 @@
 
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="patient-form">
-      <!-- 1ère colonne / 1er champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nom*</mat-label>
-        <input matInput formControlName="nom">
+        <input matInput formControlName="nom" style="color: black;">
       </mat-form-field>
 
-      <!-- 2ème colonne / 2ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Prénom*</mat-label>
-        <input matInput formControlName="prenom">
+        <input matInput formControlName="prenom" style="color: black;">
       </mat-form-field>
 
-      <!-- 1ère colonne / 3ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Date de naissance*</mat-label>
-        <input matInput type="date" formControlName="dateNaissance">
+        <input matInput type="date" formControlName="dateNaissance" style="color: black;">
       </mat-form-field>
 
-      <!-- 2ème colonne / 4ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Lieu de naissance*</mat-label>
-        <input matInput formControlName="lieuNaissance">
+        <input matInput formControlName="lieuNaissance" style="color: black;">
       </mat-form-field>
 
-      <!-- 1ère colonne / 5ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Téléphone*</mat-label>
-        <input matInput formControlName="telephone">
+        <input matInput formControlName="telephone" style="color: black;">
       </mat-form-field>
 
-      <!-- 2ème colonne / 6ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email*</mat-label>
-        <input matInput type="email" formControlName="email">
+        <input matInput type="email" formControlName="email" style="color: black;">
       </mat-form-field>
 
-      <!-- 1ère colonne / 7ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Adresse*</mat-label>
-        <input matInput formControlName="adresse">
+        <input matInput formControlName="adresse" style="color: black;">
       </mat-form-field>
 
-      <!-- 2ème colonne / 8ème champ -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>État civil*</mat-label>
-        <mat-select formControlName="etatCivil">
+        <mat-select formControlName="etatCivil"  style="color: black;">
           <mat-option value="celibataire">Célibataire</mat-option>
           <mat-option value="marie">Marié(e)</mat-option>
           <mat-option value="divorce">Divorcé(e)</mat-option>
@@ -58,7 +50,6 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- ligne complète / Genre -->
       <div class="radio-group">
         <label class="radio-label">Genre :</label>
         <mat-radio-group formControlName="genre" class="radio-buttons">
@@ -67,7 +58,6 @@
         </mat-radio-group>
       </div>
 
-      <!-- espace pour bouton : on le place en 2ème colonne -->
       <div class="submit-container">
         <button mat-raised-button color="primary"
                 type="submit"

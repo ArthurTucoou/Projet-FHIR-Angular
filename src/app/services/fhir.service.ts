@@ -11,8 +11,7 @@ export class FhirService {
 
   // Récupérer tous les patients (première page)
   getAllPatients(): Observable<any> {
-      return this.http.get<any>(`${this.apiUrl}/Patient`, { headers: { 'Accept': 'application/fhir+json' } });
-    // return this.http.get(`${this.apiUrl}/Patient`);
+    return this.http.get<any>(`${this.apiUrl}/Patient`, { headers: { 'Accept': 'application/fhir+json' } });
   }
 
   // Récupérer un patient par ID
@@ -22,7 +21,9 @@ export class FhirService {
 
   // Créer un nouveau patient
   createPatient(patient: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Patient`, patient);
+    return this.http.post(`${this.apiUrl}/Patient`, patient, {
+      headers: { 'Content-Type': 'application/fhir+json' }
+    });
   }
 
   // Modifier un patient

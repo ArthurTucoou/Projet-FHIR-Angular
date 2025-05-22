@@ -6,6 +6,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { FhirService } from '../services/fhir.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formulaire-patient',
@@ -16,13 +19,17 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     MatRadioModule,
     MatButtonModule,
-    MatCardModule 
+    MatSnackBarModule,
+    MatCardModule
   ],
   templateUrl: './formulaire-patient.component.html',
   styleUrl: './formulaire-patient.component.scss'
 })
 export class FormulairePatientComponent {
   private fb = inject(FormBuilder);
+  private fhirService = inject(FhirService);
+  private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
 
   form = this.fb.group({
     nom: ['', Validators.required],
@@ -36,10 +43,53 @@ export class FormulairePatientComponent {
     genre: ['', Validators.required]
   });
 
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('Patient à ajouter :', this.form.value);
-      // Ici : appel au service FHIR ou autre backend
-    }
+  onSubmit(): void {
+    if (this.form.invalid) return;
+
+    const formValue = this.form.value;
+
+    const patientResource = {
+      resourceType: "Patient",
+      name: [{
+        family: formValue.nom,
+        given: [formValue.prenom]
+      }],
+      birthDate: formValue.dateNaissance,
+      gender: formValue.genre,
+      telecom: [
+        { system: "phone", value: formValue.telephone },
+        { system: "email", value: formValue.email }
+      ],
+      address: [{
+        text: formValue.adresse
+      }],
+      extension: [
+        {
+          url: "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
+          valueString: formValue.lieuNaissance
+        },
+        {
+          url: "http://example.org/fhir/StructureDefinition/etat-civil",
+          valueString: formValue.etatCivil
+        }
+      ]
+    };
+
+    this.fhirService.createPatient(patientResource).subscribe({
+      next: (patient) => {
+        this.snackBar.open('Patient ' + formValue.nom + ' ' + formValue.prenom + ' ajouté avec succès ✅', 'Fermer', {
+          duration: 3000
+        });
+        this.router.navigate(['/bureau/liste-patients']);
+        console.log(patient);
+      },
+      error: err => {
+        console.error(err);
+        this.snackBar.open('Erreur lors de l\'ajout du patient ❌', 'Fermer', {
+          duration: 4000
+        });
+      }
+    });
   }
+
 }
