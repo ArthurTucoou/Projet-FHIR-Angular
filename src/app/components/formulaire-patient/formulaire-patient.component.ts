@@ -6,9 +6,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FhirService } from '../services/fhir.service';
+import { FhirService } from '../../services/fhir.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MaritalStatus } from '../../Models/martialStatus';
+import { Address } from '../../Models/address';
 
 @Component({
   selector: 'app-formulaire-patient',
@@ -31,7 +33,17 @@ export class FormulairePatientComponent {
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
 
-    form = this.fb.group({
+  etatsCivil: MaritalStatus[] = [
+    { code: 'S', display: 'Célibataire' },
+    { code: 'M', display: 'Marié(e)' },
+    { code: 'D', display: 'Divorcé(e)' },
+    { code: 'W', display: 'Veuf(ve)' },
+    { code: 'T', display: 'Partenaire' },
+    { code: 'L', display: 'Séparé(e)' },
+    { code: 'UNK', display: 'Inconnu' }
+  ];
+
+  form = this.fb.group({
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
     dateNaissance: ['', Validators.required],
@@ -39,14 +51,22 @@ export class FormulairePatientComponent {
     telephone: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     adresse: ['', Validators.required],
-    etatCivil: ['', Validators.required],
-    genre: ['', Validators.required]
+    etatCivil: [new MaritalStatus(), Validators.required],
+    genre: ['', Validators.required],
+    contactUrgenceNom: ['', Validators.required],
+    contactUrgencePrenom: ['', Validators.required],
+    contactUrgenceTel: ['', Validators.required],
+    identifiantMedical: ['', Validators.required],
+    nationalite: ['', Validators.required],
   });
 
   onSubmit(): void {
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
+
+    const addressBirth = new Address();
+    addressBirth.text = formValue.lieuNaissance ?? '';
 
     const patientResource = {
       resourceType: "Patient",
@@ -63,16 +83,11 @@ export class FormulairePatientComponent {
       address: [{
         text: formValue.adresse
       }],
-      extension: [
-        {
-          url: "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
-          valueString: formValue.lieuNaissance
-        },
-        {
-          url: "https://hl7.fr/ig/fhir/core/ValueSet/fr-core-vs-marital-status",
-          valueString: formValue.etatCivil
-        }
-      ]
+      maritalStatus: {
+        code: formValue.etatCivil?.code ?? '',
+        display: formValue.etatCivil?.display ?? ''
+      },
+      birthPlace: addressBirth
     };
 
     this.fhirService.createPatient(patientResource).subscribe({

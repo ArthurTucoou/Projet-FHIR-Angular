@@ -10,13 +10,13 @@
     </h3>
 
     <div class="info-row">
-        <p><strong>Date de naissance :</strong> {{ patient.birthDate }}</p>
-        <p><strong>Lieu de naissance :</strong> {{ patient.lieuNaissance }}</p>
+        <p><strong>Date de naissance :</strong> {{ patient.birthDate | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Lieu de naissance :</strong> {{ patient?.birthPlace?.text }}</p>
     </div>
 
     <div class="info-row">
-        <p><strong>Téléphone :</strong> {{ patient.telephone }}</p>
-        <p><strong>Email :</strong> {{ patient.email }}</p>
+        <p><strong>Téléphone :</strong> {{ patient.telecom[0].value }}</p>
+        <p><strong>Email :</strong> {{ patient.telecom[1].value }}</p>
     </div>
 
     <div class="info-row">
