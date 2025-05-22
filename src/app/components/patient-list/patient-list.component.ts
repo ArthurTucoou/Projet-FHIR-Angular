@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FhirService } from '../../services/fhir.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
+  imports: [RouterOutlet],
   selector: 'app-patient-list',
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.scss']

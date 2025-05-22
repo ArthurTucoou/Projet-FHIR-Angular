@@ -1,62 +1,88 @@
-$form-bg: #e3f2fd; // bleu clair
-
-.form-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+:root {
+  --primary-color: #1976d2;
 }
 
-.form-row {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
+/* ============ PLEIN ÉCRAN ============ */
+.full-page {
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-.form-field {
-    flex: 1;
-    min-width: 200px;
+/* ============ CARD & THÈME CLAIR ============ */
+.patient-form-card.light-theme {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem 4rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.patient-form-card.light-theme mat-card-header {
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 1rem;
+}
+.patient-form-card.light-theme mat-card-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  line-height: 1.2;
 }
 
-.radio-label {
-    font-weight: 500;
-    margin-right: 12px;
-    align-self: center;
+/* ============ GRILLE 2 COLONNES FIXES ============ */
+.patient-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* toujours 2 colonnes */
+  gap: 2rem;
+  padding: 1rem 0;
 }
 
+/* champ full width dans sa colonne */
+.full-width {
+  width: 100%;
+}
+
+/* ============ RADIO SUR LIGNE COMPLÈTE ============ */
 .radio-group {
-    display: flex;
-    gap: 24px;
-    align-items: center;
+  grid-column: 1 / -1;  /* occupe toute la largeur (2 colonnes) */
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.radio-label {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.radio-buttons mat-radio-button {
+  margin-right: 2rem;
+}
+.radio-buttons .mat-radio-label-content {
+  font-size: 1.125rem;
 }
 
-.form-actions {
-    margin-top: 24px;
+/* ============ BOUTON DANS 2ᵉ COLONNE ============ */
+.submit-container {
+  grid-column: 2 / 3;      /* place le bouton sous la 2ᵉ colonne */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
 }
 
-.form-title {
-    background-color: $form-bg;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
+/* ============ AGRANDISSEMENT CHAMPS & BOUTON ============ */
+.patient-form .mat-form-field {
+  --_height: 4.5rem;
 }
-
-.form-container {
-    background-color: $form-bg;
-    padding: 24px;
-    border-radius: 12px;
+.patient-form .mat-form-field .mat-form-field-wrapper {
+  padding: 1rem 0.75rem;
 }
-
-.mat-form-field {
-    background-color: white; // pour que les champs restent lisibles
-    border-radius: 4px;
-    padding: 4px;
+.patient-form .mat-form-field .mat-form-field-flex {
+  min-height: var(--_height);
 }
-
-button[type="submit"] {
-    background-color: #64b5f6; // bleu un peu plus foncé
-    color: white;
+.patient-form .mat-form-field .mat-input-element {
+  font-size: 1.125rem;
+  padding: 0.5rem 0;
 }
-
-button[type="submit"]:hover {
-    background-color: #42a5f5;
+.submit-container button {
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
 }

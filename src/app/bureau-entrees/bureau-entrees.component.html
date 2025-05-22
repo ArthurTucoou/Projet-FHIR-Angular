@@ -1,6 +1,14 @@
-<div class="background-container">
-    <h1>BUREAU DES ENTREES</h1>
-    <button mat-raised-button color="primary" (click)="goToPatients()">Afficher la liste des patients</button>
-    <button mat-raised-button color="primary" (click)="ajoutPatient()">Ajouter un patient</button>
-
+<!-- bureau-entrees.component.html -->
+<div class="container">
+  <header class="header"><span>Bienvenue à l’accueil</span></header>
+  <div class="body">
+    <aside class="sidebar">
+      <button mat-raised-button color="primary"  class="btn" [routerLink]="['liste-patients']" routerLinkActive="active">Liste Patients</button>
+      <button mat-raised-button color="primary" class="btn" [routerLink]="['ajout-patient']"    routerLinkActive="active">Ajout Patient</button>
+    </aside>
+    <main class="content">
+      <!-- <router-outlet> pour les enfants de BureauEntreesComponent -->
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
