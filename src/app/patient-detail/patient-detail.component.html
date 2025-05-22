@@ -38,14 +38,6 @@
     </div>
 </div>
 
-<div class="search-bar">
-    <mat-form-field appearance="fill" class="search-field">
-        <mat-label>Rechercher un rendez-vous</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Recherche...">
-        <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-</div>
-
 <div class="appointments-table-container">
     <table mat-table [dataSource]="filteredAppointments" class="mat-elevation-z2 rdv-table">
 

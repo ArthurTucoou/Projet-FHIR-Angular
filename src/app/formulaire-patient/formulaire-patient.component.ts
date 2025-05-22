@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { FhirService } from '../services/fhir.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -19,6 +20,7 @@ import { Router } from '@angular/router';
     MatRadioModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatCardModule
   ],
   templateUrl: './formulaire-patient.component.html',
   styleUrl: './formulaire-patient.component.scss'
@@ -78,7 +80,7 @@ export class FormulairePatientComponent {
         this.snackBar.open('Patient ' + formValue.nom + ' ' + formValue.prenom + ' ajouté avec succès ✅', 'Fermer', {
           duration: 3000
         });
-        this.router.navigate(['/liste-patients']);
+        this.router.navigate(['/bureau/liste-patients']);
         console.log(patient);
       },
       error: err => {

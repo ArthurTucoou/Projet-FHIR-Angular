@@ -3,10 +3,13 @@ import { FhirService } from '../../services/fhir.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-patient-list',
-  imports: [MatIconModule],
+  imports: [MatIconModule, RouterOutlet, MatCardModule, MatButtonModule],
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.scss']
 })
@@ -54,6 +57,6 @@ export class PatientListComponent implements OnInit {
   }
 
   redirectToDetailPatient(patientId: string) {
-    this.router.navigate([`/patients/${patientId}`]);
+    this.router.navigate([`/bureau/patients/${patientId}`]);
   }
 }

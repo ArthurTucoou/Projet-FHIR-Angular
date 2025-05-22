@@ -1,7 +1,20 @@
-<div class="background-container">
-    <h1>BUREAU DES ENTREES</h1>
-    <div class="button-group">
-        <button mat-raised-button color="primary" (click)="afficheListePatients()">Afficher la liste des patients</button>
-        <button mat-raised-button color="primary" (click)="afficheFormulairePatient()">Ajouter un patient</button>
-    </div>
+<div class="container">
+  <header class="header-bureau"><h3>Bureau des entrées</h3></header>
+  <div class="body">
+    <aside class="sidebar">
+      <button mat-raised-button color="primary" class="btn"
+              [routerLink]="['liste-patients']"
+              routerLinkActive="active">
+        Liste Patients
+      </button>
+      <button mat-raised-button color="primary" class="btn"
+              [routerLink]="['ajout-patient']"
+              routerLinkActive="active">
+        Ajout Patient
+      </button>
+    </aside>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
