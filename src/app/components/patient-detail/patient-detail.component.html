@@ -8,7 +8,7 @@
             <mat-icon>{{ patient.gender === 'male' ? 'man' : 'woman' }}</mat-icon>
         </div>
         <mat-card-title>{{ patient.name?.[0]?.given?.[0] ?? '' }} {{ patient.name?.[0]?.family ?? '' }}</mat-card-title>
-        <mat-card-subtitle>ID: {{ patient.id }}</mat-card-subtitle>
+        <mat-card-subtitle class="ID-patient">ID: {{ patient.id }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>

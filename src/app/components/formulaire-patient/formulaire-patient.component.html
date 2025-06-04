@@ -11,29 +11,29 @@
 
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>Prénom*</mat-label>
+                        <mat-label>Prénom</mat-label>
                         <input matInput formControlName="prenom">
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>Nom*</mat-label>
+                        <mat-label>Nom</mat-label>
                         <input matInput formControlName="nom">
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>Date de naissance*</mat-label>
+                        <mat-label>Date de naissance</mat-label>
                         <input matInput type="date" formControlName="dateNaissance">
                     </mat-form-field>
                 </div>
 
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="col-2">
-                        <mat-label>Lieu de naissance*</mat-label>
+                        <mat-label>Lieu de naissance</mat-label>
                         <input matInput formControlName="lieuNaissance">
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>Genre*</mat-label>
+                        <mat-label>Genre</mat-label>
                         <mat-select formControlName="genre">
                             <mat-option value="male">Homme</mat-option>
                             <mat-option value="female">Femme</mat-option>
@@ -49,19 +49,22 @@
 
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>Téléphone*</mat-label>
-                        <input matInput formControlName="telephone">
+                        <mat-label>Téléphone</mat-label>
+                        <input matInput formControlName="telephone" autocomplete="tel" />
+                        @if (form.get('telephone')?.hasError('invalidPhone')) {
+                        <mat-error>Numéro de téléphone français invalide.</mat-error>
+                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-2">
-                        <mat-label>Email*</mat-label>
+                        <mat-label>Email</mat-label>
                         <input matInput type="email" formControlName="email">
                     </mat-form-field>
                 </div>
 
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="col-3">
-                        <mat-label>Adresse*</mat-label>
+                        <mat-label>Adresse</mat-label>
                         <input matInput formControlName="adresse">
                     </mat-form-field>
                 </div>
@@ -73,7 +76,7 @@
 
                 <div class="form-row">
                     <mat-form-field appearance="outline" class="col-1">
-                        <mat-label>État civil*</mat-label>
+                        <mat-label>État civil</mat-label>
                         <mat-select formControlName="etatCivil">
                             @for (etat of etatsCivil; track etat.code) {
                             <mat-option [value]="etat">{{ etat.display }}</mat-option>
@@ -83,7 +86,11 @@
 
                     <mat-form-field appearance="outline" class="col-1">
                         <mat-label>Identifiant médical</mat-label>
-                        <input matInput formControlName="identifiantMedical">
+                        <input matInput type="text" pattern="^[0-9]*$" minlength="13" maxlength="15" inputmode="numeric"
+                            autocomplete="off" formControlName="identifiantMedical">
+                        @if (form.get('identifiantMedical')?.hasError('pattern')) {
+                        <mat-error>Format invalide : 13 à 15 chiffres uniquement.</mat-error>
+                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-1">
@@ -93,7 +100,15 @@
                             <mat-option [value]="country">{{ country.display }}</mat-option>
                             }
                         </mat-select>
+                        @if (form.get('nationalite')?.hasError('required')) {
+                        <mat-error>La nationalité est requise.</mat-error>
+                        }
+                        @if (form.get('nationalite')?.hasError('notFrance')) {
+                        <mat-error>Seule la nationalité française est acceptée.</mat-error>
+                        }
+
                     </mat-form-field>
+
                 </div>
             </div>
             <!-- 📌 Contact d'urgence -->

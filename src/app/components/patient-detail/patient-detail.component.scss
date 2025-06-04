@@ -34,11 +34,15 @@
 
 .info-grid {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 40px;
     margin-top: 1em;
 }
 
 .info-grid p {
     margin: 4px 0;
+}
+
+.ID-patient {
+    color: black;
 }

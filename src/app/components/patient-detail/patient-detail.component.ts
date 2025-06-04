@@ -47,7 +47,6 @@ export class PatientDetailComponent implements OnInit {
     this.fhirService.getPatientById(this.patientId).subscribe({
       next: (data) => {
         this.patient = data;
-        console.log(this.patient);
         this.patient.contactUrgence = this.getContactUrgence(data);        
 
         this.fhirService?.getAppointmentsByPatientId(this.patientId).subscribe({
@@ -60,7 +59,6 @@ export class PatientDetailComponent implements OnInit {
               const practitionerRef = participants.find(p =>
                 p.actor?.reference?.startsWith('Practitioner/')
               )?.actor.reference;
-              console.log(practitionerRef);
 
 
               const locationRef = participants.find(p =>
@@ -75,15 +73,11 @@ export class PatientDetailComponent implements OnInit {
               if (practitionerRef) {
                 this.fhirService.getResourceByReference(practitionerRef).subscribe({
                   next: (practitioner) => {
-                    console.log(practitioner);
-
                     // Supposons que practitioner.name[0].text ou display contient le nom
                     const name = practitioner.name && practitioner.name.length > 0
                       ? practitioner?.name[0]?.family + ' ' + practitioner?.name[0].given[0]
                       : 'Nom non trouvé';
                     appointment.practitionerLabel = name;
-                    console.log(name);
-
                   },
                   error: () => appointment.practitionerLabel = 'Non trouvé'
                 });
@@ -95,8 +89,6 @@ export class PatientDetailComponent implements OnInit {
               if (locationRef) {
                 this.fhirService.getResourceByReference(locationRef).subscribe({
                   next: (location) => {
-                    console.log(location);
-
                     // location.name contient souvent le nom
                     appointment.locationLabel = location.name || 'Nom non trouvé';
                   },

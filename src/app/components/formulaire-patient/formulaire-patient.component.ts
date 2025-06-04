@@ -11,6 +11,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MaritalStatus } from '../../Models/martialStatus';
 import { Nationalite } from '../../Models/nationalite';
+import { nationaliteFranceValidator } from '../../validators/nationalite.validator';
+import { frenchPhoneValidator } from '../../validators/frenchPhone.validator';
 
 @Component({
   selector: 'app-formulaire-patient',
@@ -66,18 +68,17 @@ export class FormulairePatientComponent {
     { code: 'CH', display: 'Suisse' }
   ];
 
-
   form = this.fb.group({
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
     dateNaissance: ['', Validators.required],
     lieuNaissance: ['', Validators.required],
-    telephone: ['', Validators.required],
+    telephone: ['', [Validators.required, frenchPhoneValidator]],
     email: ['', [Validators.required, Validators.email]],
     adresse: ['', Validators.required],
-    etatCivil: [new MaritalStatus(), Validators.required],
+    etatCivil: this.fb.control<MaritalStatus | null>(null, Validators.required),
     genre: ['', Validators.required],
-    nationalite: [new Nationalite(), Validators.required],
+    nationalite: this.fb.control<Nationalite | null>(null, [Validators.required, nationaliteFranceValidator]),
     contactUrgenceNom: ['', Validators.required],
     contactUrgencePrenom: ['', Validators.required],
     contactUrgenceTel: ['', Validators.required],
@@ -94,26 +95,8 @@ export class FormulairePatientComponent {
       identifier: [
         {
           use: "official",
-          type: {
-            coding: [
-              {
-                system: "http://terminology.hl7.org/CodeSystem/v2-0203",
-                code: "NNSSA",
-                display: "Numéro National de Santé"
-              }
-            ]
-          },
           system: "http://fhir.fr/CodeSystem/identifiant-national-patient",
           value: formValue.identifiantMedical,
-          assigner: {
-            display: "Assurance Maladie"
-          },
-          extension: [
-            {
-              url: "https://hl7.fr/ig/fhir/core/StructureDefinition/fr-core-patient-identifier",
-              valueBoolean: true
-            }
-          ]
         }
       ],
       name: [{
@@ -190,7 +173,6 @@ export class FormulairePatientComponent {
           duration: 3000
         });
         this.router.navigate(['/bureau/liste-patients']);
-        console.log(patient);
       },
       error: err => {
         console.error(err);

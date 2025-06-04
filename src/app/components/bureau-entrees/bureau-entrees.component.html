@@ -1,20 +1,26 @@
-<div class="container">
-  <header class="header-bureau"><h3>Bureau des entrées</h3></header>
-  <div class="body">
-    <aside class="sidebar">
-      <button mat-raised-button color="primary" class="btn"
-              [routerLink]="['liste-patients']"
-              routerLinkActive="active">
-        Liste Patients
-      </button>
-      <button mat-raised-button color="primary" class="btn"
-              [routerLink]="['ajout-patient']"
-              routerLinkActive="active">
-        Ajout Patient
-      </button>
-    </aside>
-    <main class="content">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav custom-sidenav">
+    <div class="sidebar-header">
+      <h3>Bureau des entrées</h3>
+    </div>
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['liste-patients']" routerLinkActive="active-link" class="nav-button">
+        <mat-icon color="primary">people</mat-icon>
+        <span>Liste des patients</span>
+      </a>
+      <a mat-list-item [routerLink]="['ajout-patient']" routerLinkActive="active-link" class="nav-button">
+        <mat-icon color="primary">person_add</mat-icon>
+        <span>Ajouter un patient</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content-area">
+    <mat-toolbar class="app-toolbar">
+      <span>Mon Application Médicale</span>
+    </mat-toolbar>
+    <div class="main-content">
       <router-outlet></router-outlet>
-    </main>
-  </div>
-</div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

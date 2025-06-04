@@ -23,7 +23,7 @@
         </mat-card-header>
 
         <mat-card-actions align="end">
-           <button mat-fab  (click)="deletePatient(patient.id)">
+           <button mat-fab  (click)="deletePatient(patient.id); $event.stopPropagation()">
           <mat-icon>delete</mat-icon>
         </button>
         </mat-card-actions>
