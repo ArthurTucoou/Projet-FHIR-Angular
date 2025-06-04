@@ -26,11 +26,6 @@ export class FhirService {
     });
   }
 
-  // Modifier un patient
-  updatePatient(id: string, patient: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/Patient/${id}`, patient);
-  }
-
   // Supprimer un patient
   deletePatient(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/Patient/${id}`);
@@ -41,5 +36,10 @@ export class FhirService {
     return this.http.get<any>(url).pipe(
       map(response => response.entry?.map((e: any) => e.resource) || [])
     );
+  }
+
+  getResourceByReference(reference: string): Observable<any> {
+    // référence = "Practitioner/123" ou "Location/456"
+    return this.http.get<any>(`${this.apiUrl}/${reference}`);
   }
 }

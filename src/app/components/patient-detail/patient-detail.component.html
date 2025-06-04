@@ -1,69 +1,98 @@
 <h2>Détails du patient</h2>
 
 @if (!isLoading && patient) {
-<div class="patient-info-card">
-    <h3>
-        {{ patient.name?.[0]?.family }} {{ patient.name?.[0]?.given?.[0] }}
-        <mat-icon color="primary">
-            {{ patient.gender === 'male' ? 'male' : 'female' }}
-        </mat-icon>
-    </h3>
+<mat-card class="mat-elevation-z4 patient-card">
+    <mat-card-header>
+        <div mat-card-avatar class="avatar-circle"
+            [ngStyle]="{ background: patient.gender === 'male' ? '#2196f3' : '#e91e63' }">
+            <mat-icon>{{ patient.gender === 'male' ? 'man' : 'woman' }}</mat-icon>
+        </div>
+        <mat-card-title>{{ patient.name?.[0]?.given?.[0] ?? '' }} {{ patient.name?.[0]?.family ?? '' }}</mat-card-title>
+        <mat-card-subtitle>ID: {{ patient.id }}</mat-card-subtitle>
+    </mat-card-header>
 
-    <div class="info-row">
-        <p><strong>Date de naissance :</strong> {{ patient.birthDate | date:'dd/MM/yyyy' }}</p>
-        <p><strong>Lieu de naissance :</strong> {{ patient?.birthPlace?.text }}</p>
-    </div>
+    <mat-card-content>
+        <div class="info-grid">
+            <div>
+                <p><strong>📅 Date de naissance:</strong> {{ patient?.birthDate | date:'dd/MM/yyyy' }}</p>
+                <p><strong>🏙️ Lieu de naissance:</strong> {{ patient?.extension && patient?.extension.length > 0 ?
+                    patient?.extension[1]?.valueAddress?.city : '' }}</p>
+                <p><strong>📞 Téléphone:</strong> {{ patient?.telecom && patient?.telecom.length > 0 ?
+                    patient?.telecom[0]?.value : '' }}</p>
+                <p><strong>📧 Email:</strong> {{ patient?.telecom && patient?.telecom.length > 0 ?
+                    patient?.telecom[1]?.value : '' }}</p>
+            </div>
+            <div>
+                <p><strong>🆔 Identifiant médical:</strong> {{ patient?.identifier && patient?.identifier.length > 0 ?
+                    patient?.identifier[0]?.value : '' }}</p>
+                <p><strong>🌐 Nationalité:</strong> {{ patient?.extension && patient?.extension.length > 0 ?
+                    patient?.extension[0]?.valueCodeableConcept?.coding[0].display : '' }}
+                </p>
+                <p><strong>👨‍👩‍👧‍👦 État civil:</strong> {{ patient?.maritalStatus?.text ||
+                    patient?.maritalStatus?.display }}</p>
+                <p><strong>📍 Adresse:</strong> {{ patient?.address && patient?.address.length > 0 ?
+                    patient?.address[0]?.text : '' }}</p>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
 
-    <div class="info-row">
-        <p><strong>Téléphone :</strong> {{ patient.telecom[0].value }}</p>
-        <p><strong>Email :</strong> {{ patient.telecom[1].value }}</p>
-    </div>
 
-    <div class="info-row">
-        <p><strong>Identifiant médical :</strong> {{ patient.identifiantMedical }}</p>
-        <p><strong>Nationalité :</strong> {{ patient.nationalite }}</p>
-    </div>
+<mat-card class="mat-elevation-z2">
+    <mat-card-title class="title-card">📋 Rendez-vous</mat-card-title>
+    @if (appointments.length > 0) {
+    <mat-card-content>
+        <table mat-table [dataSource]="appointments" class="rdv-table full-width">
 
-    <div class="info-row">
-        <p><strong>Contact d'urgence :</strong> {{ patient.contactUrgence }}</p>
-    </div>
+            <!-- Date -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let rdv">
+                    {{ rdv.start | date:'dd MMM yyyy, HH:mm' : 'fr-FR' }}
+                </td>
+            </ng-container>
 
-    <div class="info-row">
-        <p><strong>Adresse :</strong> {{ patient.adresse }}</p>
-        <p><strong>État civil :</strong> {{ patient.etatCivil }}</p>
-    </div>
+            <!-- Description -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let rdv">{{ rdv.description }}</td>
+            </ng-container>
 
-    <div class="info-row">
-        <p><strong>ID :</strong> {{ patient.id }}</p>
-    </div>
-</div>
+            <!-- Médecin -->
+            <ng-container matColumnDef="medecin">
+                <th mat-header-cell *matHeaderCellDef>Médecin</th>
+                <td mat-cell *matCellDef="let rdv">
+                    👨‍⚕️ {{ rdv.practitionerLabel || 'Non renseigné' }}
+                </td>
+            </ng-container>
 
-<div class="appointments-table-container">
-    <table mat-table [dataSource]="filteredAppointments" class="mat-elevation-z2 rdv-table">
+            <!-- Localisation -->
+            <ng-container matColumnDef="localisation">
+                <th mat-header-cell *matHeaderCellDef>Localisation</th>
+                <td mat-cell *matCellDef="let rdv">
+                    📍 {{ rdv.locationLabel || 'Non renseigné' }}
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let rdv">{{ rdv.start | date:'medium' }}</td>
-        </ng-container>
+            <!-- Statut -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let rdv">
+                    <mat-chip [color]="rdv.status === 'booked' ? 'primary' : 'warn'" selected>
+                        {{ rdv.status }}
+                    </mat-chip>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let rdv">{{ rdv.description }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Statut</th>
-            <td mat-cell *matCellDef="let rdv">{{ rdv.status }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="['date', 'description', 'status']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['date', 'description', 'status']"></tr>
-    </table>
-</div>
-
-@if (appointments.length === 0) {
-<p>Aucun rendez-vous trouvé.</p>
-}
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        </table>
+    </mat-card-content>
+    }
+    @else {
+    <p style="padding-left: 1rem;">Aucun rendez-vous trouvé.</p>
+    }
+</mat-card>
 }
 
 @if (!isLoading && !patient) {

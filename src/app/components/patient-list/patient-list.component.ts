@@ -23,16 +23,10 @@ export class PatientListComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
-    console.log("tesstt");
-
     this.fhirService.getAllPatients().subscribe({
       next: (response) => {
-        console.log(response);
-
         this.patients = response.entry?.map((e: any) => e.resource) || [];
         this.isLoading = false;
-        console.log(this.isLoading);
-
       },
       error: (error) => {
         this.errorMessage = 'Erreur lors du chargement des patients.';
@@ -46,9 +40,11 @@ export class PatientListComponent implements OnInit {
       this.fhirService.deletePatient(patientId).subscribe({
         next: () => {
           this.patients = this.patients.filter(p => p.id !== patientId); // Met à jour la liste localement
+          this.router.navigate([`/bureau/liste-patients`]);
           this.snackBar.open('Patient supprimé avec succès', 'Fermer', { duration: 3000 });
         },
         error: (error) => {
+          this.router.navigate([`/bureau/patients`]);
           this.snackBar.open('Erreur lors de la suppression', 'Fermer', { duration: 3000 });
           console.error(error);
         }

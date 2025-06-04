@@ -10,7 +10,7 @@ import { FhirService } from '../../services/fhir.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MaritalStatus } from '../../Models/martialStatus';
-import { Address } from '../../Models/address';
+import { Nationalite } from '../../Models/nationalite';
 
 @Component({
   selector: 'app-formulaire-patient',
@@ -43,6 +43,30 @@ export class FormulairePatientComponent {
     { code: 'UNK', display: 'Inconnu' }
   ];
 
+  countries: Nationalite[] = [
+    { code: 'FR', display: 'France' },
+    { code: 'DE', display: 'Allemagne' },
+    { code: 'IT', display: 'Italie' },
+    { code: 'ES', display: 'Espagne' },
+    { code: 'TN', display: 'Tunisie' },
+    { code: 'MA', display: 'Maroc' },
+    { code: 'DZ', display: 'Algérie' },
+    { code: 'PT', display: 'Portugal' },
+    { code: 'GB', display: 'Royaume-Uni' },
+    { code: 'US', display: 'États-Unis' },
+    { code: 'CA', display: 'Canada' },
+    { code: 'BR', display: 'Brésil' },
+    { code: 'TR', display: 'Turquie' },
+    { code: 'CN', display: 'Chine' },
+    { code: 'IN', display: 'Inde' },
+    { code: 'JP', display: 'Japon' },
+    { code: 'SN', display: 'Sénégal' },
+    { code: 'CI', display: "Côte d'Ivoire" },
+    { code: 'BE', display: 'Belgique' },
+    { code: 'CH', display: 'Suisse' }
+  ];
+
+
   form = this.fb.group({
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
@@ -53,11 +77,11 @@ export class FormulairePatientComponent {
     adresse: ['', Validators.required],
     etatCivil: [new MaritalStatus(), Validators.required],
     genre: ['', Validators.required],
+    nationalite: [new Nationalite(), Validators.required],
     contactUrgenceNom: ['', Validators.required],
     contactUrgencePrenom: ['', Validators.required],
     contactUrgenceTel: ['', Validators.required],
     identifiantMedical: ['', Validators.required],
-    nationalite: ['', Validators.required],
   });
 
   onSubmit(): void {
@@ -65,11 +89,33 @@ export class FormulairePatientComponent {
 
     const formValue = this.form.value;
 
-    const addressBirth = new Address();
-    addressBirth.text = formValue.lieuNaissance ?? '';
-
     const patientResource = {
       resourceType: "Patient",
+      identifier: [
+        {
+          use: "official",
+          type: {
+            coding: [
+              {
+                system: "http://terminology.hl7.org/CodeSystem/v2-0203",
+                code: "NNSSA",
+                display: "Numéro National de Santé"
+              }
+            ]
+          },
+          system: "http://fhir.fr/CodeSystem/identifiant-national-patient",
+          value: formValue.identifiantMedical,
+          assigner: {
+            display: "Assurance Maladie"
+          },
+          extension: [
+            {
+              url: "https://hl7.fr/ig/fhir/core/StructureDefinition/fr-core-patient-identifier",
+              valueBoolean: true
+            }
+          ]
+        }
+      ],
       name: [{
         family: formValue.nom,
         given: [formValue.prenom]
@@ -84,10 +130,58 @@ export class FormulairePatientComponent {
         text: formValue.adresse
       }],
       maritalStatus: {
-        code: formValue.etatCivil?.code ?? '',
-        display: formValue.etatCivil?.display ?? ''
+        coding: [{
+          system: "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+          code: formValue.etatCivil?.code ?? '',
+          display: formValue.etatCivil?.display ?? ''
+        }],
+        text: formValue.etatCivil?.display ?? ''
       },
-      birthPlace: addressBirth
+      extension: [
+        {
+          url: 'https://hl7.fr/ig/fhir/core/StructureDefinition/fr-core-patient-nationality',
+          valueCodeableConcept: {
+            coding: [{
+              system: 'urn:iso:std:iso:3166',
+              code: formValue.nationalite?.code,
+              display: formValue.nationalite?.display
+            }]
+          }
+        },
+        {
+          url: "https://hl7.fr/ig/fhir/core/StructureDefinition/fr-core-birthPlace",
+          valueAddress: {
+            city: formValue.lieuNaissance
+          }
+        }
+      ],
+      contact: [
+        {
+          relationship: [
+            {
+              coding: [
+                {
+                  system: "http://terminology.hl7.org/CodeSystem/v2-0131",
+                  code: "E",
+                  display: "Emergency Contact"
+                }
+              ],
+              text: "Contact d'urgence"
+            }
+          ],
+          name: {
+            family: formValue.contactUrgenceNom,
+            given: [formValue.contactUrgencePrenom]
+          },
+          telecom: [
+            {
+              system: "phone",
+              value: formValue.contactUrgenceTel,
+              use: "mobile"
+            }
+          ]
+        }
+      ]
     };
 
     this.fhirService.createPatient(patientResource).subscribe({
