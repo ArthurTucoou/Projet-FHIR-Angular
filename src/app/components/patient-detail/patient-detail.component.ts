@@ -47,7 +47,6 @@ export class PatientDetailComponent implements OnInit {
     this.fhirService.getPatientById(this.patientId).subscribe({
       next: (data) => {
         this.patient = data;
-        this.patient.contactUrgence = this.getContactUrgence(data);        
 
         this.fhirService?.getAppointmentsByPatientId(this.patientId).subscribe({
           next: (rdvs) => {
@@ -111,27 +110,6 @@ export class PatientDetailComponent implements OnInit {
         this.isLoading = false;
       }
     });
-  }
-
-  // Extrait le contact d'urgence de la ressource patient FHIR
-  getContactUrgence(patientResource: any): string {
-    if (!patientResource.contact || patientResource.contact.length === 0) {
-      return "";
-    }
-
-    const contactUrgence = patientResource.contact.find((c: any) =>
-      c.relationship?.some((r: any) => r.coding?.some((code: any) => code.code === 'E'))
-    );
-
-    if (!contactUrgence) {
-      return "";
-    }
-
-    const nom = contactUrgence.name?.family ?? '';
-    const prenom = contactUrgence.name?.given?.join(' ') ?? '';
-    const tel = contactUrgence.telecom?.find((t: any) => t.system === 'phone')?.value ?? '';
-
-    return `${prenom} ${nom} - Tel: ${tel}`;
   }
 
 }
